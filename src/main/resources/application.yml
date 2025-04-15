@@ -1,10 +1,10 @@
 spring:
+  redis:
+    url: ${SPRING_REDIS_URL}
   data:
     mongodb:
       uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/from-unknown}
 
-  redis:
-    url: ${SPRING_REDIS_URL}
 
 
 logging:
