@@ -1,0 +1,19 @@
+spring:
+  data:
+    mongodb:
+      uri: ${SPRING_DATA_MONGODB_URI:mongodb://localhost:27017/from-unknown}
+  redis:
+    host: ${SPRING_REDIS_HOST:localhost}
+    port: 6379
+
+
+logging:
+  level:
+    com.fromunknown.scheduler: INFO
+
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+  api-docs:
+    path: /v3/api-docs

@@ -1,0 +1,11 @@
+package com.fromunknown.entity;
+
+/**
+ * explain the Class File
+ *
+ * @author : choiseongho
+ * @fileName : Letter.java
+ * @since : 2025-04-15
+ */
+public class Letter {
+}
