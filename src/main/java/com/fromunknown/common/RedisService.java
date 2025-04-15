@@ -20,4 +20,8 @@ public class RedisService {
     public void setKeyWithExpire(String key, String value, Duration duration) {
         redisTemplate.opsForValue().set(key, value, duration);
     }
+
+    public void delete(String key) {
+        redisTemplate.delete(key);
+    }
 }

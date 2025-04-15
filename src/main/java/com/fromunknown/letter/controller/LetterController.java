@@ -26,12 +26,9 @@ public class LetterController {
 
     private final LetterService letterService;
 
-    private final RedisService redisService;
-
-    @Operation(summary = "편지 쓰기", description = "하루에 1통만 작성할 수 있어요")
+    @Operation(summary = "편지 쓰기", description = "익명으로 자유롭게 편지를 보낼 수 있어요")
     @ApiResponses({
-        @ApiResponse(responseCode = "200", description = "작성 성공"),
-        @ApiResponse(responseCode = "429", description = "하루 1통 제한")
+        @ApiResponse(responseCode = "200", description = "작성 성공")
     })
     @PostMapping
     public ResponseEntity<?> writeLetter(@RequestBody String message,
@@ -52,24 +49,8 @@ public class LetterController {
             response.addHeader("Set-Cookie", cookie.toString());
         }
 
-        // 2. IP 추출
-        String ip = request.getHeader("X-Forwarded-For");
-        if (ip == null || ip.isBlank()) {
-            ip = request.getRemoteAddr();
-        }
-
-        // 3. Redis 키 생성
-        String redisKey = "letter:sent:" + clientToken + ":" + ip;
-
-        // 4. Redis 확인
-        if (redisService.isKeyExists(redisKey)) {
-            return ResponseEntity.status(HttpStatus.TOO_MANY_REQUESTS)
-                    .body("오늘은 이미 편지를 보냈어요. 내일 다시 찾아와 주세요 🕊️");
-        }
-
-        // 5. 편지 저장 + Redis 키 등록
+        // 2. 편지 저장
         letterService.save(message);
-        redisService.setKeyWithExpire(redisKey, "1", Duration.ofHours(24));
 
         return ResponseEntity.ok().build();
     }
